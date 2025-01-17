@@ -2,21 +2,7 @@
 import sys
 import os
 
-def handleGet(filename):
-
-    try:
-        with open(filename, "r") as file:
-            print(f"\nReading from: {os.path.basename(filename)}...\n")
-
-            for line in file:
-                print(line.strip())
-
-    except Exception as e:
-        sys.exit(f"\nError: {e}\nExiting program...")
-
-
-def handleSet(filename):
-    print(filename)
+bufferSize = 4096
 
 def main():
     
@@ -37,11 +23,28 @@ def main():
     filename = input("Please enter your filename: ")
 
     if command == "GET":
-        handleGet(filename)
+        try:
+            with open(filename, "r") as file:
+                print(f"\nReading from: {os.path.basename(filename)}...\n")
+                for line in file:
+                    print(line.strip())
+        except Exception as e:
+            sys.exit(f"\nError: {e}\nExiting program...")
+            handleGet(filename)
 
     elif command == "SET":
-        print("Please enter the contents of your file: ")
-        handleSet(filename)
+        print("Please enter the contents of your file: (Ctrl + D to save)")
+        try:
+            with open(filename, "w") as file:
+                for line in sys.stdin:
+                    file.write(line)
+                    file.flush()
+            print(f"\nInput written to {filename}. Exiting program...")
+        except Exception as e:
+            sys.exit(f"\nError: {e}\nExiting program...")
+
+    else:
+        sys.exit("\nUnknown error. Exiting program...")
 
 if __name__ == "__main__":
     main()
