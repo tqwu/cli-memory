@@ -3,7 +3,17 @@ import sys
 import os
 
 def handleGet(filename):
-    print(filename)
+
+    try:
+        with open(filename, "r") as file:
+            print(f"\nReading from: {os.path.basename(filename)}...\n")
+
+            for line in file:
+                print(line.strip())
+
+    except Exception as e:
+        sys.exit(f"\nError: {e}\nExiting program...")
+
 
 def handleSet(filename):
     print(filename)
@@ -14,6 +24,8 @@ def main():
     This CLI supports two functions:
     - GET : retrieve the contents of an existing file
     - SET : create and set the contents of a new file OR update the contents of an existing file
+
+    Please note: this program only supports text files.
     """
     
     print(instructions)
@@ -25,10 +37,8 @@ def main():
     filename = input("Please enter your filename: ")
 
     if command == "GET":
-        if not os.path.isfile(filename):
-            sys.exit("\nFile does not exist. Exiting program...")
         handleGet(filename)
-        
+
     elif command == "SET":
         print("Please enter the contents of your file: ")
         handleSet(filename)
